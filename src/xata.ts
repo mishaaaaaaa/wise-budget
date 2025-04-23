@@ -96,6 +96,14 @@ const tables = [
         comment: "",
       },
       {
+        name: "awaiting_account_selection",
+        type: "bool",
+        notNull: false,
+        unique: false,
+        defaultValue: "false",
+        comment: "",
+      },
+      {
         name: "xata_createdat",
         type: "datetime",
         notNull: true,

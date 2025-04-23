@@ -30,13 +30,14 @@ export class XataClientWrapper {
    */
   async saveOrUpdateUser(userData: {
     telegramId: number;
-    username: string;
-    firstName: string;
-    lastName: string;
-    languageCode: string;
-    isPremium: boolean;
-    monobankToken: string;
-    monobankName: string;
+    username: string | undefined;
+    firstName: string | undefined;
+    lastName: string | undefined;
+    languageCode: string | undefined;
+    isPremium: boolean | undefined;
+    monobankToken: string | undefined;
+    monobankName: string | undefined;
+    awaitingAccountSelection?: boolean;
   }): Promise<UsersRecord | null> {
     try {
       const existingUser = await this.getUserByTelegramId(userData.telegramId);
@@ -44,7 +45,7 @@ export class XataClientWrapper {
       if (existingUser) {
         // Update existing user
         const result = await this.client.db.users.update(existingUser.xata_id, {
-          username: userData.username,
+          username: userData.username || undefined,
           user_name:
             userData.firstName && userData.lastName
               ? `${userData.firstName} ${userData.lastName}`
@@ -55,6 +56,10 @@ export class XataClientWrapper {
           is_premium: userData.isPremium ?? existingUser.is_premium,
           monobank_token: userData.monobankToken || existingUser.monobank_token,
           monobank_name: userData.monobankName || existingUser.monobank_name,
+          awaiting_account_selection:
+            userData.awaitingAccountSelection !== undefined
+              ? userData.awaitingAccountSelection
+              : existingUser.awaiting_account_selection,
         });
         return result as UsersRecord | null;
       } else {
@@ -71,6 +76,8 @@ export class XataClientWrapper {
           monobank_token: userData.monobankToken || "",
           monobank_name: userData.monobankName || "",
           main_account_id: "", // Default empty until selected
+          awaiting_account_selection:
+            userData.awaitingAccountSelection ?? false,
         });
         return result as UsersRecord | null;
       }
@@ -105,6 +112,34 @@ export class XataClientWrapper {
     } catch (error) {
       console.error(
         `Error updating Monobank info for user ${telegramId}:`,
+        error
+      );
+      return null;
+    }
+  }
+
+  /**
+   * Update user's main account ID and selection status
+   */
+  async updateUserAccountSelection(data: {
+    telegramId: number;
+    mainAccountId: string;
+    awaitingSelection: boolean;
+  }): Promise<UsersRecord | null> {
+    try {
+      const user = await this.getUserByTelegramId(data.telegramId);
+      if (!user) {
+        return null;
+      }
+
+      const result = await this.client.db.users.update(user.xata_id, {
+        main_account_id: data.mainAccountId,
+        awaiting_account_selection: data.awaitingSelection,
+      });
+      return result as UsersRecord | null;
+    } catch (error) {
+      console.error(
+        `Error updating account selection for user ${data.telegramId}:`,
         error
       );
       return null;
