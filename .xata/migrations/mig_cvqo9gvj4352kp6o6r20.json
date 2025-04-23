@@ -1,0 +1,24 @@
+{
+  "done": true,
+  "migration": {
+    "name": "mig_cvqo9gvj4352kp6o6r20",
+    "operations": [
+      {
+        "add_column": {
+          "up": "''",
+          "table": "users",
+          "column": {
+            "name": "monobank_token",
+            "type": "text",
+            "comment": ""
+          }
+        }
+      }
+    ]
+  },
+  "migrationType": "pgroll",
+  "name": "mig_cvqo9gvj4352kp6o6r20",
+  "parent": "mig_cvqo8g97hprt444eoc0g",
+  "schema": "public",
+  "startedAt": "2025-04-08T20:19:16.578705Z"
+}

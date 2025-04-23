@@ -7,7 +7,7 @@
     "dev": "nodemon --exec \"node --loader ts-node/esm\" src/bot.ts"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.49.1",
+    "@xata.io/client": "^0.0.0-next.v93343b9646f57a1e5c51c35eccf0767c2bb80baa",
     "cheerio": "^1.0.0",
     "dotenv": "^16.0.3",
     "express": "^4.21.2",
@@ -15,9 +15,9 @@
     "telegraf": "^4.12.2"
   },
   "devDependencies": {
-    "@types/node": "^18.15.11",
+    "@types/node": "^18.19.86",
     "nodemon": "^3.1.9",
     "ts-node": "^10.9.2",
-    "typescript": "^5.0.0"
+    "typescript": "^5.8.3"
   }
 }

@@ -1,0 +1,6 @@
+{
+  "databaseURL": "https://mishaaaaaaa-s-workspace-rh373l.eu-central-1.xata.sh/db/wise-budget_bot",
+  "codegen": {
+    "output": "src/xata.ts"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "done": true,
+  "migration": {
+    "name": "mig_cvqo6gfj4352kp6o6r00",
+    "operations": [
+      {
+        "add_column": {
+          "up": "0",
+          "table": "users",
+          "column": {
+            "name": "telegram_id",
+            "type": "int",
+            "unique": true,
+            "comment": ""
+          }
+        }
+      }
+    ]
+  },
+  "migrationType": "pgroll",
+  "name": "mig_cvqo6gfj4352kp6o6r00",
+  "parent": "mig_cvqo49vj4352kp6o6qv0",
+  "schema": "public",
+  "startedAt": "2025-04-08T20:12:49.753065Z"
+}
