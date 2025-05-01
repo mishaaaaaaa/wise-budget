@@ -5,7 +5,7 @@ import bodyParser from "body-parser";
 import fetch from "node-fetch";
 import { xataClient } from "./xataClient.js";
 import { MonobankClientInfo } from "./types.js";
-import { commands } from "./commands.js";
+import { commands } from "./user-commands.js";
 
 // ✅ XataClient wrapper implemented
 
