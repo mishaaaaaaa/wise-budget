@@ -203,6 +203,11 @@ export class XataClientWrapper {
       return [];
     }
   }
+
+  async getUpdateUserState() {
+    try {
+    } catch (error) {}
+  }
 }
 
 // Singleton pattern for XataClientWrapper
