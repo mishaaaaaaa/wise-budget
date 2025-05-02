@@ -29,8 +29,20 @@ const tables = [
         name: "users__pgroll_new_telegram_id_key",
         columns: ["telegram_id"],
       },
+      users__pgroll_new_user_id_key: {
+        name: "users__pgroll_new_user_id_key",
+        columns: ["user_id"],
+      },
     },
     columns: [
+      {
+        name: "user_id",
+        type: "int",
+        notNull: true,
+        unique: true,
+        defaultValue: null,
+        comment: "Platform-independent unique identifier for the user",
+      },
       {
         name: "is_premium",
         type: "bool",

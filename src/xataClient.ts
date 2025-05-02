@@ -3,10 +3,18 @@ dotenv.config();
 
 import { getXataClient, UsersRecord } from "./xata.js";
 
-/**
- * Wrapper for XataClient to provide centralized database operations
- * and error handling for the budget bot application
- */
+type UserData = {
+  telegramId: number;
+  username: string | undefined;
+  firstName: string | undefined;
+  lastName: string | undefined;
+  languageCode: string | undefined;
+  isPremium: boolean | undefined;
+  monobankToken: string | undefined;
+  monobankName: string | undefined;
+  awaitingAccountSelection?: boolean;
+};
+
 export class XataClientWrapper {
   private client = getXataClient();
 
@@ -28,17 +36,7 @@ export class XataClientWrapper {
   /**
    * Create a new user or update an existing one
    */
-  async saveOrUpdateUser(userData: {
-    telegramId: number;
-    username: string | undefined;
-    firstName: string | undefined;
-    lastName: string | undefined;
-    languageCode: string | undefined;
-    isPremium: boolean | undefined;
-    monobankToken: string | undefined;
-    monobankName: string | undefined;
-    awaitingAccountSelection?: boolean;
-  }): Promise<UsersRecord | null> {
+  async saveOrUpdateUser(userData: UserData): Promise<UsersRecord | null> {
     try {
       const existingUser = await this.getUserByTelegramId(userData.telegramId);
 
@@ -63,8 +61,16 @@ export class XataClientWrapper {
         });
         return result as UsersRecord | null;
       } else {
-        // Create new user
+        // Create new user - generate a new user_id
+        const lastUser = await this.client.db.users
+          .select(["user_id"])
+          .sort("user_id", "desc")
+          .getFirst();
+        const nextUserId = (lastUser?.user_id || 0) + 1;
+
+        // Create new user with the generated user_id
         const result = await this.client.db.users.create({
+          user_id: nextUserId,
           telegram_id: userData.telegramId,
           username: userData.username || "",
           user_name:
