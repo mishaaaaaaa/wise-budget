@@ -1,14 +1,14 @@
 // src/commands/select.ts
 import { Telegraf } from "telegraf";
 import fetch from "node-fetch";
-import { xataClient } from "../xataClient.js";
+import { getUserClient } from "../user-instance.js";
 import { MonobankClientInfo } from "../types.js";
 
 export const select = (bot: Telegraf) => {
   bot.command("select", async (ctx) => {
     const userId = ctx.from.id;
-    const client = xataClient();
-    const user = await client.getUserByTelegramId(userId);
+    const client = getUserClient(userId);
+    const user = await client.getCurrentUser();
 
     if (!user) {
       return ctx.reply("❗ Спершу підключи токен через /connect");
@@ -41,7 +41,6 @@ export const select = (bot: Telegraf) => {
       if (data.accounts && data.accounts.length > 0) {
         // Update user to awaiting account selection mode
         await client.updateUserAccountSelection({
-          telegramId: userId,
           mainAccountId: user.main_account_id || "",
           awaitingSelection: true,
         });
